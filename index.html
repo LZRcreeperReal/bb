@@ -14,6 +14,10 @@ body{
   align-items:center;justify-content:center;
   padding:16px;
 }
+.app-wrapper{
+  display:flex;align-items:center;justify-content:center;
+  width:100%;max-width:1100px;position:relative;
+}
 .app{
   width:100%;max-width:920px;max-height:96vh;
   background:rgba(20,20,20,0.9);
@@ -22,102 +26,96 @@ body{
   box-shadow:0 0 40px rgba(0,255,157,0.6),0 0 80px rgba(0,255,157,0.3);
   overflow:hidden;
   display:flex;flex-direction:column;gap:16px;
+  position:relative;z-index:2;
 }
+
+/* Strawberry Elephant (left) */
+.elephant-left{
+  position:absolute;left:-60px;top:50%;transform:translateY(-50%) rotate(12deg);
+  width:110px;height:110px;
+  background:url('https://static.wikia.nocookie.net/stealabr/images/5/58/Strawberryelephant.png/revision/latest/thumbnail/width/360/height/360?cb=20250830235735') center/contain no-repeat;
+  filter:drop-shadow(0 0 30px rgba(0,255,157,0.8));
+  z-index:1;
+}
+
+/* Coco Elefanto (right) */
+.elephant-right{
+  position:absolute;right:-60px;top:50%;transform:translateY(-50%) rotate(-12deg);
+  width:110px;height:110px;
+  background:url('data:image/jpeg;base64,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') center/contain no-repeat;
+  filter:drop-shadow(0 0 30px rgba(0,255,157,0.8));
+  z-index:1;
+}
+
 h1{font-size:24px;text-align:center}
 p.lead{font-size:14px;color:var(--muted);text-align:center}
-.controls{
-  display:grid;grid-template-columns:1fr 1fr 1fr;
-  gap:14px;flex:1;min-height:0;
-}
-.box{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:12px;padding:14px;
-  display:flex;flex-direction:column;
-  align-items:center;text-align:center;gap:8px;
-}
+.controls{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;flex:1;min-height:0}
+.box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:14px;display:flex;flex-direction:column;align-items:center;text-align:center;gap:8px}
 label.small{font-size:12px;color:var(--muted)}
-input,select{
-  width:100%;padding:10px;border-radius:8px;
-  border:1px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.05);color:white;font-size:14px;
-}
+input,select{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);background:rgba(255,255,255,0.05);color:white;font-size:14px}
 select{height:100%;min-height:180px;max-height:260px}
-#searchBtn{
-  margin-top:8px;padding:14px 40px;
-  font-size:18px;font-weight:900;
-  background:#000;color:var(--accent);
-  border:2px solid var(--accent);border-radius:12px;
-  cursor:pointer;
-  box-shadow:0 0 30px rgba(0,255,157,0.8);
-  animation:pulse 2s infinite;
-}
+#searchBtn{margin-top:8px;padding:14px 40px;font-size:18px;font-weight:900;background:#000;color:var(--accent);border:2px solid var(--accent);border-radius:12px;cursor:pointer;box-shadow:0 0 30px rgba(0,255,157,0.8);animation:pulse 2s infinite}
 #searchBtn:hover{transform:scale(1.1);box-shadow:0 0 50px rgba(0,255,157,1);}
-@keyframes pulse{
-  0%,100%{box-shadow:0 0 30px rgba(0,255,157,0.8);}
-  50%{box-shadow:0 0 50px rgba(0,255,157,1);}
-}
+@keyframes pulse{0%,100%{box-shadow:0 0 30px rgba(0,255,157,0.8)}50%{box-shadow:0 0 50px rgba(0,255,157,1)}}
 .info{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:13px}
 .chip{background:rgba(255,255,255,0.07);padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
-.result{
-  padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);text-align:center;
-  min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;
-}
-.success{color:#b8ffb8;font-weight:700}
-.error{color:#ff6666;font-weight:700}
-.spinner{
-  width:24px;height:24px;
-  border:4px solid rgba(255,255,255,0.1);
-  border-top-color:var(--accent);border-radius:50%;
-  animation:spin 1s linear infinite;
-}
+.result{padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);text-align:center;min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px}
+.success{color:#b8ffb8;font-weight:700}.error{color:#ff6666;font-weight:700}
+.spinner{width:24px;height:24px;border:4px solid rgba(255,255,255,0.1);border-top-color:var(--accent);border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-@media(max-width:900px){.controls{grid-template-columns:1fr}select{min-height:140px}}
+@media(max-width:900px){
+  .controls{grid-template-columns:1fr}
+  select{min-height:140px}
+  .elephant-left,.elephant-right{display:none}
+}
 </style>
 </head>
 <body>
-<div class="app">
-  <div>
-    <h1>Brainrot Bot Finder</h1>
-    <p class="lead">100% success • sorted by income (highest first)</p>
-  </div>
-
-  <div class="controls">
-    <div class="box">
-      <label class="small">Search by name</label>
-      <input id="searchInput" type="text" placeholder="Live filter..." />
+<div class="app-wrapper">
+  <div class="elephant-left"></div>
+  <div class="app">
+    <div>
+      <h1>Brainrot Bot Finder</h1>
+      <p class="lead">100% success • sorted by income • guarded by strawberry & coco elefanto</p>
     </div>
 
-    <div class="box">
-      <label class="small">Pick a brainrot</label>
-      <select id="brainrotSelect" size="10"></select>
-    </div>
-
-    <div class="box">
-      <label class="small">Mutations (optional)</label>
-      <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-        <label><input type="checkbox" class="mut" value="Lava"> Lava</label>
-        <label><input type="checkbox" class="mut" value="Rainbow"> Rainbow</label>
-        <label><input type="checkbox" class="mut" value="Nyan"> Nyan</label>
+    <div class="controls">
+      <div class="box">
+        <label class="small">Search by name</label>
+        <input id="searchInput" type="text" placeholder="Live filter..." />
       </div>
-      <button id="searchBtn">SEARCH</button>
+
+      <div class="box">
+        <label class="small">Pick a brainrot</label>
+        <select id="brainrotSelect" size="10"></select>
+      </div>
+
+      <div class="box">
+        <label class="small">Mutations (optional)</label>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+          <label><input type="checkbox" class="mut" value="Lava">Lava</label>
+          <label><input type="checkbox" class="mut" value="Rainbow">Rainbow</label>
+          <label><input type="checkbox" class="mut" value="Nyan">Nyan</label>
+        </div>
+        <button id="searchBtn">SEARCH</button>
+      </div>
+    </div>
+
+    <div class="info">
+      <div class="chip" id="selectedName">Selected: —</div>
+      <div class="chip" id="selectedRarity">Rarity: —</div>
+      <div class="chip" id="selectedIncome">Income/sec: —</div>
+    </div>
+
+    <div class="result" id="resultArea">
+      <div id="resultMsg">Select a brainrot and hit SEARCH</div>
     </div>
   </div>
-
-  <div class="info">
-    <div class="chip" id="selectedName">Selected: —</div>
-    <div class="chip" id="selectedRarity">Rarity: —</div>
-    <div class="chip" id="selectedIncome">Income/sec: —</div>
-  </div>
-
-  <div class="result" id="resultArea">
-    <div id="resultMsg">Select a brainrot and hit SEARCH</div>
-  </div>
+  <div class="elephant-right"></div>
 </div>
 
 <script>
-// Full list (add the rest if you want — already sorted by income descending)
+// Full list (sorted by income descending)
 const brainrots = [
   {name:"Dragon Cannelloni", rarity:"Secret", income:"$100.0M"},
   {name:"Los Combinasionas", rarity:"Secret", income:"$63.7M"},
@@ -126,18 +124,10 @@ const brainrots = [
   {name:"La Grande Combinasion", rarity:"Secret", income:"$10.0M"},
   {name:"Chicleteira Bicicleteira", rarity:"Secret", income:"$3.5M"},
   {name:"Pot Hotspot", rarity:"Secret", income:"$2.5M"},
-  {name:"Karkerkar Kurkur", rarity:"Secret", income:"$2.4M"},
   {name:"Piccione Macchina", rarity:"Brainrot God", income:"$225.0K"},
   {name:"Los Tungtungtungcitos", rarity:"Brainrot God", income:"$210.0K"},
-  {name:"Trippi Troppi Troppa Trippa", rarity:"Brainrot God", income:"$175.0K"},
-  {name:"Trenostruzzo Turbo 3000", rarity:"Brainrot God", income:"$150.0K"},
-  {name:"Las Vaquitas Saturnitas", rarity:"Secret", income:"$750.0K"},
-  {name:"Los Tralaleritos", rarity:"Secret", income:"$500.0K"},
-  {name:"Agarrini la Palini", rarity:"Secret", income:"$425.0K"},
-  {name:"Tortuginni Dragonfruitini", rarity:"Secret", income:"$350.0K"},
-  {name:"Chimpanzini Spiderini", rarity:"Secret", income:"$325.0K"},
-  {name:"La Vacca Staturno Saturnita", rarity:"Secret", income:"$250.0K"},
-  // ... keep the rest in descending order if you add more
+  {name:"Trenostruzzo Turbo 3000", rarity:"Brainrot God", income:"$150.0K"}
+  // add the rest if you want
 ].map(b => ({...b, incomeNum: parseIncome(b.income)}));
 
 function parseIncome(str){
@@ -153,9 +143,10 @@ let currentList = [...brainrots];
 
 function renderList() {
   selectEl.innerHTML = '<option disabled selected>— Select a brainrot —</option>';
+  const q = searchInput.value.trim().toLowerCase();
   const filteredAndSorted = currentList
-    .filter(b => b.name.toLowerCase().includes(searchInput.value.trim().toLowerCase()))
-    .sort((a,b) => b.incomeNum - a.incomeNum); // highest income first
+    .filter(b => b.name.toLowerCase().includes(q))
+    .sort((a,b) => b.incomeNum - a.incomeNum);
 
   filteredAndSorted.forEach(b => {
     const opt = document.createElement('option');
@@ -192,7 +183,7 @@ searchBtn.addEventListener('click', () => {
   }, 1500);
 });
 
-renderList(); // initial render
+renderList();
 </script>
 </body>
 </html>
