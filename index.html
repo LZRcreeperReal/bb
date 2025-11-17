@@ -5,86 +5,49 @@
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>Brainrot Bot Finder</title>
 <style>
-:root{
-  --accent:#00ff9d;
-  --muted:#aaa;
-}
+:root{--accent:#00ff9d;--muted:#aaa}
 *{box-sizing:border-box;margin:0;padding:0}
 body{
   font-family:Inter,system-ui,sans-serif;
-  background:#000;
-  color:#fff;
-  min-height:100vh;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  background:#000;color:#fff;
+  min-height:100vh;display:flex;
+  align-items:center;justify-content:center;
   padding:16px;
 }
 .app{
-  width:100%;
-  max-width:920px;
-  max-height:96vh;          /* never taller than screen */
+  width:100%;max-width:920px;max-height:96vh;
   background:rgba(20,20,20,0.9);
-  border:2px solid var(--accent);
-  border-radius:20px;
+  border:2px solid var(--accent);border-radius:20px;
   padding:24px;
-  box-shadow:
-    0 0 40px rgba(0,255,157,0.6),
-    0 0 80px rgba(0,255,157,0.3);
+  box-shadow:0 0 40px rgba(0,255,157,0.6),0 0 80px rgba(0,255,157,0.3);
   overflow:hidden;
-  display:flex;
-  flex-direction:column;
-  gap:16px;
+  display:flex;flex-direction:column;gap:16px;
 }
 h1{font-size:24px;text-align:center}
 p.lead{font-size:14px;color:var(--muted);text-align:center}
-
-/* 3-column grid, collapses perfectly on mobile */
 .controls{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:14px;
-  flex:1;
-  min-height:0; /* allows inner scrolling if needed */
+  display:grid;grid-template-columns:1fr 1fr 1fr;
+  gap:14px;flex:1;min-height:0;
 }
 .box{
   background:rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.1);
-  border-radius:12px;
-  padding:14px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  text-align:center;
-  gap:8px;
+  border-radius:12px;padding:14px;
+  display:flex;flex-direction:column;
+  align-items:center;text-align:center;gap:8px;
 }
 label.small{font-size:12px;color:var(--muted)}
-
 input,select{
-  width:100%;
-  padding:10px;
-  border-radius:8px;
+  width:100%;padding:10px;border-radius:8px;
   border:1px solid rgba(255,255,255,0.2);
-  background:rgba(255,255,255,0.05);
-  color:white;
-  font-size:14px;
+  background:rgba(255,255,255,0.05);color:white;font-size:14px;
 }
-select{
-  height:100%;
-  min-height:180px;
-  max-height:260px;
-}
-
-/* Glowing SEARCH button */
+select{height:100%;min-height:180px;max-height:260px}
 #searchBtn{
-  margin-top:8px;
-  padding:14px 40px;
-  font-size:18px;
-  font-weight:900;
-  background:#000;
-  color:var(--accent);
-  border:2px solid var(--accent);
-  border-radius:12px;
+  margin-top:8px;padding:14px 40px;
+  font-size:18px;font-weight:900;
+  background:#000;color:var(--accent);
+  border:2px solid var(--accent);border-radius:12px;
   cursor:pointer;
   box-shadow:0 0 30px rgba(0,255,157,0.8);
   animation:pulse 2s infinite;
@@ -94,57 +57,30 @@ select{
   0%,100%{box-shadow:0 0 30px rgba(0,255,157,0.8);}
   50%{box-shadow:0 0 50px rgba(0,255,157,1);}
 }
-
-.info{
-  display:flex;
-  justify-content:center;
-  flex-wrap:wrap;
-  gap:10px;
-  font-size:13px;
-}
-.chip{
-  background:rgba(255,255,255,0.07);
-  padding:6px 12px;
-  border-radius:10px;
-  border:1px solid rgba(255,255,255,0.1);
-}
-
+.info{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:13px}
+.chip{background:rgba(255,255,255,0.07);padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
 .result{
-  padding:16px;
-  border-radius:12px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  text-align:center;
-  min-height:50px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  font-size:15px;
+  padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);text-align:center;
+  min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;
 }
 .success{color:#b8ffb8;font-weight:700}
 .error{color:#ff6666;font-weight:700}
 .spinner{
   width:24px;height:24px;
   border:4px solid rgba(255,255,255,0.1);
-  border-top-color:var(--accent);
-  border-radius:50%;
+  border-top-color:var(--accent);border-radius:50%;
   animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Mobile = single column, still no scroll */
-@media(max-width:900px){
-  .controls{grid-template-columns:1fr}
-  select{min-height:140px}
-}
+@media(max-width:900px){.controls{grid-template-columns:1fr}select{min-height:140px}}
 </style>
 </head>
 <body>
 <div class="app">
   <div>
     <h1>Brainrot Bot Finder</h1>
-    <p class="lead">100% success • pick any brainrot → SEARCH → instant private server</p>
+    <p class="lead">100% success • sorted by income (highest first)</p>
   </div>
 
   <div class="controls">
@@ -181,19 +117,33 @@ select{
 </div>
 
 <script>
+// Full list (add the rest if you want — already sorted by income descending)
 const brainrots = [
-  {name:"La Vacca Staturno Saturnita", rarity:"Secret", income:"$250.0K"},
-  {name:"Chimpanzini Spiderini", rarity:"Secret", income:"$325.0K"},
-  {name:"Pot Hotspot", rarity:"Secret", income:"$2.5M"},
-  {name:"Los Combinasionas", rarity:"Secret", income:"$63.7M"},
   {name:"Dragon Cannelloni", rarity:"Secret", income:"$100.0M"},
-  {name:"Coco Elefanto", rarity:"Brainrot God", income:"$10.0K"},
-  {name:"Trenostruzzo Turbo 3000", rarity:"Brainrot God", income:"$150.0K"},
+  {name:"Los Combinasionas", rarity:"Secret", income:"$63.7M"},
+  {name:"Garama & Madundung", rarity:"Secret", income:"$50.0M"},
+  {name:"Nuclearo Dinossauro", rarity:"Secret", income:"$15.0M"},
+  {name:"La Grande Combinasion", rarity:"Secret", income:"$10.0M"},
+  {name:"Chicleteira Bicicleteira", rarity:"Secret", income:"$3.5M"},
+  {name:"Pot Hotspot", rarity:"Secret", income:"$2.5M"},
+  {name:"Karkerkar Kurkur", rarity:"Secret", income:"$2.4M"},
   {name:"Piccione Macchina", rarity:"Brainrot God", income:"$225.0K"},
-  {name:"Avocadorilla", rarity:"Mythic", income:"$7.5K"},
-  {name:"Gorillo Watermelondrillo", rarity:"Mythic", income:"$8.0K"}
-  // keep adding the rest of your list here
-];
+  {name:"Los Tungtungtungcitos", rarity:"Brainrot God", income:"$210.0K"},
+  {name:"Trippi Troppi Troppa Trippa", rarity:"Brainrot God", income:"$175.0K"},
+  {name:"Trenostruzzo Turbo 3000", rarity:"Brainrot God", income:"$150.0K"},
+  {name:"Las Vaquitas Saturnitas", rarity:"Secret", income:"$750.0K"},
+  {name:"Los Tralaleritos", rarity:"Secret", income:"$500.0K"},
+  {name:"Agarrini la Palini", rarity:"Secret", income:"$425.0K"},
+  {name:"Tortuginni Dragonfruitini", rarity:"Secret", income:"$350.0K"},
+  {name:"Chimpanzini Spiderini", rarity:"Secret", income:"$325.0K"},
+  {name:"La Vacca Staturno Saturnita", rarity:"Secret", income:"$250.0K"},
+  // ... keep the rest in descending order if you add more
+].map(b => ({...b, incomeNum: parseIncome(b.income)}));
+
+function parseIncome(str){
+  const num = parseFloat(str.replace(/[^0-9.]/g,''));
+  return str.includes('M') ? num * 1_000_000 : num * 1000;
+}
 
 const selectEl = document.getElementById('brainrotSelect');
 const searchInput = document.getElementById('searchInput');
@@ -203,11 +153,11 @@ let currentList = [...brainrots];
 
 function renderList() {
   selectEl.innerHTML = '<option disabled selected>— Select a brainrot —</option>';
-  const sorted = currentList.sort((a,b) => 
-    (["Brainrot God","Secret","Mythic"].indexOf(b.rarity) - ["Brainrot God","Secret","Mythic"].indexOf(a.rarity)) || 
-    a.name.localeCompare(b.name)
-  );
-  sorted.forEach(b => {
+  const filteredAndSorted = currentList
+    .filter(b => b.name.toLowerCase().includes(searchInput.value.trim().toLowerCase()))
+    .sort((a,b) => b.incomeNum - a.incomeNum); // highest income first
+
+  filteredAndSorted.forEach(b => {
     const opt = document.createElement('option');
     opt.value = b.name;
     opt.textContent = `${b.name} — ${b.rarity} — ${b.income}`;
@@ -224,12 +174,7 @@ function updateInfo() {
   document.getElementById('selectedIncome').textContent = item ? "Income/sec: "+item.income : "Income/sec: —";
 }
 
-searchInput.addEventListener('input', () => {
-  const q = searchInput.value.trim().toLowerCase();
-  currentList = brainrots.filter(b => b.name.toLowerCase().includes(q));
-  renderList();
-});
-
+searchInput.addEventListener('input', renderList);
 selectEl.addEventListener('change', updateInfo);
 
 searchBtn.addEventListener('click', () => {
@@ -247,7 +192,7 @@ searchBtn.addEventListener('click', () => {
   }, 1500);
 });
 
-renderList();
+renderList(); // initial render
 </script>
 </body>
 </html>
