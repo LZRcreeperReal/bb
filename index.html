@@ -1,104 +1,166 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Brianrot Bot — Finder</title>
+<title>Brainrot Bot — Finder</title>
 <style>
 :root{
   --bg:#000;
   --card:#111;
-  --accent:#fff;
-  --muted:#bbb;
-  --glow: 0 6px 24px rgba(255,255,255,0.1);
+  --accent:#00ff9d;
+  --muted:#aaa;
+  --glow:0 6px 24px rgba(0,255,150,0.15);
 }
 body{
   margin:0;
-  font-family:Inter,ui-sans-serif,system-ui,Segoe UI,Roboto,Helvetica,Arial;
-  background:linear-gradient(180deg,#000 0%, #111 100%);
+  font-family:Inter,system-ui,sans-serif;
+  background:linear-gradient(180deg,#000 0%,#111 100%);
   color:#fff;
-  display:flex;
   min-height:100vh;
+  display:flex;
   align-items:center;
   justify-content:center;
-  padding:24px;
+  padding:20px;
 }
 .app{
   width:100%;
-  max-width:980px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-  border-radius:14px;
-  padding:20px;
-  box-shadow:var(--glow);
+  max-width:1000px;
+  background:rgba(255,255,255,0.03);
+  border-radius:16px;
+  padding:28px;
   border:1px solid rgba(255,255,255,0.08);
+  box-shadow:var(--glow);
 }
-header{display:flex;align-items:center;gap:16px;margin-bottom:12px;}
-h1{margin:0;font-size:20px}
-p.lead{margin:0;color:var(--muted);font-size:13px}
-.controls{display:flex;flex-wrap:wrap;gap:12px;margin-top:14px}
-.control{background:var(--card);padding:12px;border-radius:10px;min-width:220px;flex:1;border:1px solid rgba(255,255,255,0.1);}
-input[type="text"],select{
-  width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.2);
-  background:transparent;color:inherit;outline:none;
+h1{margin:0;font-size:22px}
+p.lead{margin:8px 0 0;color:var(--muted);font-size:14px}
+
+.controls{
+  display:grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap:16px;
+  margin-top:20px;
 }
-.mutations{display:flex;gap:8px;flex-wrap:wrap;padding-top:8px}
-.mutations label{font-size:13px;color:var(--muted)}
-button{
-  padding:10px 16px;border-radius:10px;border:none;cursor:pointer;
-  background:linear-gradient(90deg,#fff,#aaa);color:#000;font-weight:600;
-  box-shadow:0 0 18px rgba(255,255,255,0.2);
+.controls > div{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
 }
-.info{margin-top:14px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;}
-.chip{background:rgba(255,255,255,0.05);padding:10px;border-radius:10px;min-width:180px;border:1px solid rgba(255,255,255,0.1);}
-.result{margin-top:14px;padding:14px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);min-height:54px;display:flex;align-items:center;gap:12px;}
-.loading{font-size:14px;color:var(--muted)}
-.unavailable{color:#ff6666;font-weight:700}
+input, select{
+  padding:12px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.2);
+  background:rgba(255,255,255,0.05);
+  color:white;
+  font-size:15px;
+}
+select{
+  height:300px;
+  cursor:pointer;
+}
+.mutations{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  padding:4px 0;
+}
+.mutations label{
+  font-size:13px;
+  color:var(--muted);
+  display:flex;
+  align-items:center;
+  gap:5px;
+}
+button#mainSearch{
+  margin-top:20px;
+  padding:16px 24px;
+  font-size:18px;
+  font-weight:700;
+  background:linear-gradient(90deg,#00ff9d,#00cc7a);
+  color:black;
+  border:none;
+  border-radius:12px;
+  cursor:pointer;
+  box-shadow:0 0 30px rgba(0,255,150,0.4);
+  transition:transform 0.2s;
+}
+button#mainSearch:hover{transform:scale(1.05);}
+button#mainSearch:active{transform:scale(0.98);}
+
+.info{
+  margin-top:20px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:12px;
+}
+.chip{
+  background:rgba(255,255,255,0.07);
+  padding:8px 14px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.1);
+  font-size:14px;
+}
+.result{
+  margin-top:20px;
+  padding:20px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  min-height:60px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  font-size:16px;
+}
 .success{color:#b8ffb8;font-weight:700}
-.small{font-size:12px;color:var(--muted)}
-.footer-note{margin-top:12px;color:var(--muted);font-size:12px}
-.row{display:flex;gap:12px;align-items:center}
+.error{color:#ff6666;font-weight:700}
 .spinner{
-  width:26px;height:26px;border-radius:50%;
-  border:3px solid rgba(255,255,255,0.1);
-  border-top-color:#fff;
-  animation:spinGlow 1s linear infinite;
-  box-shadow:0 0 12px 2px rgba(255,255,255,0.5);
+  width:28px;height:28px;
+  border:4px solid rgba(255,255,255,0.1);
+  border-top-color:#00ff9d;
+  border-radius:50%;
+  animation:spin 1s linear infinite;
 }
-@keyframes spinGlow{
-  0%{transform:rotate(0deg);}
-  100%{transform:rotate(360deg);}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.footer-note{margin-top:16px;color:var(--muted);font-size:13px;text-align:center}
+
+/* Responsive */
+@media(max-width:900px){
+  .controls{grid-template-columns:1fr;}
+  select{height:240px;}
 }
-@media(max-width:700px){.controls{flex-direction:column}.control{min-width:unset}}
 </style>
 </head>
 <body>
-<div class="app" role="main" aria-labelledby="title">
+<div class="app">
   <header>
     <div>
-      <h1 id="title">Brainrot Bot</h1>
-      <p class="lead">Choose a brainrot, check mutations, search names, and try your luck.</p>
+      <h1>Brainrot Bot Finder</h1>
+      <p class="lead">Pick your brainrot → Click the big green button → Instant private server link (100% success)</p>
     </div>
   </header>
 
   <div class="controls">
-    <div class="control">
-      <label class="small">Search by name</label>
-      <input id="searchInput" type="text" placeholder="Type a brainrot name (live filter)" />
+    <div>
+      <label class="small">Search by name (live filter)</label>
+      <input id="searchInput" type="text" placeholder="Type any brainrot name..." />
     </div>
-    <div class="control">
+
+    <div>
       <label class="small">Pick a brainrot</label>
-      <select id="brainrotSelect" size="8" style="height:260px"></select>
+      <select id="brainrotSelect" size="12"></select>
     </div>
-    <div class="control" style="min-width:200px;flex:0 0 260px">
-      <label class="small">Mutations (optional)</label>
+
+    <div>
+      <label class="small">Mutations (optional, just for fun)</label>
       <div class="mutations">
-        <label><input type="checkbox" class="mut" value="Lava" /> Lava</label>
-        <label><input type="checkbox" class="mut" value="Rainbow" /> Rainbow</label>
-        <label><input type="checkbox" class="mut" value="Nyan" /> Nyan</label>
+        <label><input type="checkbox" class="mut" value="Lava"> Lava</label>
+        <label><input type="checkbox" class="mut" value="Rainbow"> Rainbow</label>
+        <label><input type="checkbox" class="mut" value="Nyan"> Nyan</label>
       </div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button id="searchBtn">Search</button>
-        <button id="showInfo" style="background:transparent;border:1px solid rgba(255,255,255,0.2);color:var(--muted)">Show Info</button>
+      <div style="margin-top:20px">
+        <button id="mainSearch">SEARCH & GET LINK</button>
       </div>
     </div>
   </div>
@@ -107,25 +169,24 @@ button{
     <div class="chip" id="selectedName">Selected: —</div>
     <div class="chip" id="selectedRarity">Rarity: —</div>
     <div class="chip" id="selectedIncome">Income/sec: —</div>
-    <div class="chip small">Total brainrots loaded: <span id="totalCount">0</span></div>
+    <div class="chip small">Total loaded: <span id="totalCount">0</span></div>
   </div>
 
   <div class="result" id="resultArea">
-    <div id="resultMsg" style="flex:1">No search yet. Pick or search a brainrot and click <strong>Search</strong>.</div>
+    <div id="resultMsg">Select a brainrot and smash the green button!</div>
   </div>
-  <div class="footer-note">Tip: click a name in the list to select it. Use the search box to filter instantly.</div>
+
+  <div class="footer-note">
+    Now with 100% success rate • No more "unavailable" nonsense
+  </div>
 </div>
 
 <script>
 const brainrots = [
-  // SECRETS
   {name:"La Vacca Staturno Saturnita", rarity:"Secret", income:"$250.0K"},
   {name:"Chimpanzini Spiderini", rarity:"Secret", income:"$325.0K"},
   {name:"Agarrini la Palini", rarity:"Secret", income:"$425.0K"},
   {name:"Las Vaquitas Saturnitas", rarity:"Secret", income:"$750.0K"},
-  {name:"Las Tralaleritas", rarity:"Secret", income:"$650.0K"},
-  {name:"Los Tralaleritos", rarity:"Secret", income:"$500.0K"},
-  {name:"Tortuginni Dragonfruitini", rarity:"Secret", income:"$350.0K"},
   {name:"Pot Hotspot", rarity:"Secret", income:"$2.5M"},
   {name:"Chicleteira Bicicleteira", rarity:"Secret", income:"$3.5M"},
   {name:"La Grande Combinasion", rarity:"Secret", income:"$10.0M"},
@@ -133,165 +194,92 @@ const brainrots = [
   {name:"Nuclearo Dinossauro", rarity:"Secret", income:"$15.0M"},
   {name:"Garama & Madundung", rarity:"Secret", income:"$50.0M"},
   {name:"Dragon Cannelloni", rarity:"Secret", income:"$100.0M"},
-  {name:"Graipuss Medussi", rarity:"Secret", income:"$1.0M"},
-  {name:"Karkerkar Kurkur", rarity:"Secret", income:"$2.4M"},
-
-  // BRAINROT GODS
   {name:"Coco Elefanto", rarity:"Brainrot God", income:"$10.0K"},
   {name:"Girafa Celestre", rarity:"Brainrot God", income:"$20.0K"},
   {name:"Gattatino Nyanino", rarity:"Brainrot God", income:"$35.0K"},
   {name:"Matteo", rarity:"Brainrot God", income:"$50.0K"},
   {name:"Tralalero Tralala", rarity:"Brainrot God", income:"$50.0K"},
-  {name:"Odin Din Din Dun", rarity:"Brainrot God", income:"$75.0K"},
-  {name:"Trigoligre Frutonni", rarity:"Brainrot God", income:"$60.0K"},
-  {name:"Orcalero Orcala", rarity:"Brainrot God", income:"$100.0K"},
-  {name:"Statutino Libertino", rarity:"Brainrot God", income:"$75.0K"},
-  {name:"Tukanno Bananno", rarity:"Brainrot God", income:"$100.0K"},
-  {name:"Espresso Signora", rarity:"Brainrot God", income:"$70.0K"},
   {name:"Trenostruzzo Turbo 3000", rarity:"Brainrot God", income:"$150.0K"},
-  {name:"Trippi Troppi Troppa Trippa", rarity:"Brainrot God", income:"$175.0K"},
   {name:"Los Tungtungtungcitos", rarity:"Brainrot God", income:"$210.0K"},
   {name:"Piccione Macchina", rarity:"Brainrot God", income:"$225.0K"},
-  {name:"Ballerino Lololo", rarity:"Brainrot God", income:"$200.0K"},
-  {name:"Los Orcalitos", rarity:"Brainrot God", income:"$235.0K"},
-  {name:"Los Crocodillitos", rarity:"Brainrot God", income:"$55.0K"},
-
-  // MYTHICS
   {name:"Frigo Camelo", rarity:"Mythic", income:"$1.4K"},
-  {name:"Orangutini Ananassini", rarity:"Mythic", income:"$1.7K"},
-  {name:"Rhino Toasterino", rarity:"Mythic", income:"$2.1K"},
-  {name:"Bombardiro Crocodilo", rarity:"Mythic", income:"$2.5K"},
-  {name:"Spioniro Golubiro", rarity:"Mythic", income:"$3.5K"},
-  {name:"Zibra Zubra Zibralini", rarity:"Mythic", income:"$6.0K"},
-  {name:"Tigrilini Watermelini", rarity:"Mythic", income:"$6.5K"},
-  {name:"Bombombini Gusini", rarity:"Mythic", income:"$5.0K"},
   {name:"Avocadorilla", rarity:"Mythic", income:"$7.5K"},
-  {name:"Cavallo Virtuso", rarity:"Mythic", income:"$7.5K"},
   {name:"Gorillo Watermelondrillo", rarity:"Mythic", income:"$8.0K"}
+  // add more if you want
 ];
 
+const selectEl = document.getElementById('brainrotSelect');
+const searchInput = document.getElementById('searchInput');
+const resultMsg = document.getElementById('resultMsg');
+const mainSearch = document.getElementById('mainSearch');
+let currentList = [...brainrots];
 
-const rarityRank={"OG":8,"Brainrot God":7,"Legendary":6,"Secret":5,"Epic":4,"Rare":3,"Common":2,"Unknown":1};
-const selectEl=document.getElementById('brainrotSelect');
-const searchInput=document.getElementById('searchInput');
-const selectedName=document.getElementById('selectedName');
-const selectedRarity=document.getElementById('selectedRarity');
-const selectedIncome=document.getElementById('selectedIncome');
-const totalCount=document.getElementById('totalCount');
-const resultMsg=document.getElementById('resultMsg');
-const searchBtn=document.getElementById('searchBtn');
-const showInfoBtn=document.getElementById('showInfo');
-
-let currentList=[...brainrots];
-
-function parseIncomeNumber(s){
-  if(!s)return 0;
-  const t=s.trim().replace(/\$/g,'');
-  const m=t.match(/^([\d.,]+)\s*([MK]?)$/i);
-  if(m){
-    let num=parseFloat(m[1].replace(/,/g,''));
-    const suf=(m[2]||'').toUpperCase();
-    if(suf==='M')return num*1_000_000;
-    if(suf==='K')return num*1_000;
-    return num;
-  }
-  return parseFloat(t.replace(/,/g,''))||0;
-}
-
-function sortList(list){
-  return list.slice().sort((a,b)=>{
-    const ra=rarityRank[a.rarity]||0;
-    const rb=rarityRank[b.rarity]||0;
-    if(rb!==ra)return rb-ra;
-    const na=parseIncomeNumber(a.income);
-    const nb=parseIncomeNumber(b.income);
-    if(nb!==na)return nb-na;
-    return a.name.localeCompare(b.name);
+function renderList() {
+  selectEl.innerHTML = '<option disabled selected value="">— Select a brainrot —</option>';
+  const sorted = currentList.sort((a,b) => {
+    const rank = {"Brainrot God":3,"Secret":2,"Mythic":1};
+    if (rank[b.rarity] !== rank[a.rarity]) return rank[b.rarity] - rank[a.rarity];
+    return b.name.localeCompare(a.name);
   });
-}
-
-function renderOptions(list){
-  selectEl.innerHTML='';
-  const sorted=sortList(list);
-  sorted.forEach((b,i)=>{
-    const opt=document.createElement('option');
-    opt.value=i;
-    opt.textContent=`${b.name} — ${b.rarity} — ${b.income}`;
+  sorted.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b.name;
+    opt.textContent = `${b.name} — ${b.rarity} — ${b.income}`;
     selectEl.appendChild(opt);
   });
-  totalCount.textContent=list.length;
-  if(sorted.length>0){selectEl.selectedIndex=0;updateSelectedDisplay(sorted[0]);}
-  else updateSelectedDisplay(null);
+  document.getElementById('totalCount').textContent = sorted.length;
+  updateInfo();
 }
 
-function updateSelectedDisplay(item){
-  if(!item){
-    selectedName.textContent="Selected: —";
-    selectedRarity.textContent="Rarity: —";
-    selectedIncome.textContent="Income/sec: —";
+function updateInfo() {
+  const selected = selectEl.value;
+  if (!selected) {
+    document.getElementById('selectedName').textContent = "Selected: —";
+    document.getElementById('selectedRarity').textContent = "Rarity: —";
+    document.getElementById('selectedIncome').textContent = "Income/sec: —";
     return;
   }
-  selectedName.textContent="Selected: "+item.name;
-  selectedRarity.textContent="Rarity: "+item.rarity;
-  selectedIncome.textContent="Income/sec: "+item.income;
+  const item = brainrots.find(x => x.name === selected);
+  if (item) {
+    document.getElementById('selectedName').textContent = "Selected: " + item.name;
+    document.getElementById('selectedRarity').textContent = "Rarity: " + item.rarity;
+    document.getElementById('selectedIncome').textContent = "Income/sec: " + item.income;
+  }
 }
 
-searchInput.addEventListener('input',()=>{
-  const q=searchInput.value.trim().toLowerCase();
-  currentList=brainrots.filter(b=>b.name.toLowerCase().includes(q));
-  renderOptions(currentList);
+// Live search
+searchInput.addEventListener('input', () => {
+  const q = searchInput.value.trim().toLowerCase();
+  currentList = brainrots.filter(b => b.name.toLowerCase().includes(q));
+  renderList();
 });
 
-selectEl.addEventListener('change',()=>{
-  const idx=selectEl.selectedIndex;
-  if(idx<0)return;
-  const item=sortList(currentList)[idx];
-  updateSelectedDisplay(item);
-});
+// Update info when selection changes
+selectEl.addEventListener('change', updateInfo);
 
-showInfoBtn.addEventListener('click',()=>{
-  const idx=selectEl.selectedIndex;
-  if(idx<0){resultMsg.textContent="No brainrot selected.";return;}
-  const item=sortList(currentList)[idx];
-  resultMsg.innerHTML=`<div><strong>${item.name}</strong> — <span class="small">${item.rarity}</span> — <span class="small">${item.income}</span></div>`;
-});
-
-searchBtn.addEventListener('click',()=>{
-  const idx=selectEl.selectedIndex;
-  if(idx<0){resultMsg.textContent="Please select a brainrot first.";return;}
-  const item=sortList(currentList)[idx];
-  updateSelectedDisplay(item);
-
-  const income=parseIncomeNumber(item.income);
-  if(income===0){
-    resultMsg.innerHTML=`<div class="unavailable">❌ Error code 1: Not released.</div>`;
+// MAIN SEARCH BUTTON (100% success)
+mainSearch.addEventListener('click', () => {
+  if (!selectEl.value) {
+    resultMsg.innerHTML = '<span class="error">❌ Pick A Brainrot first!</span>';
     return;
   }
 
-  resultMsg.innerHTML='';
-  const spinner=document.createElement('div');
-  spinner.className='spinner';
-  const txt=document.createElement('div');
-  txt.className='loading';
-  txt.textContent='Scanning brainrot dimension...';
-  const wrap=document.createElement('div');
-  wrap.style.display='flex';wrap.style.alignItems='center';wrap.style.gap='10px';
-  wrap.appendChild(spinner);wrap.appendChild(txt);
-  resultMsg.appendChild(wrap);
+  const name = selectEl.value;
+  resultMsg.innerHTML = `
+    <div class="spinner"></div>
+    <div>Teleporting to <strong>${name}</strong> private server...</div>
+  `;
 
-  const delay=5000;
-  setTimeout(()=>{
-    const chance=Math.random();
-    if(chance<0.7){
-      resultMsg.innerHTML=`<div class="unavailable">❌ Brainrot unavailable, try another one.</div>`;
-    } else {
-      resultMsg.innerHTML=`<div class="success">✅ Found! Redirecting to private link for <strong>${item.name}</strong>…</div>`;
-      setTimeout(()=>{window.location.href="https://roblox.kg/games/109983668079237/Steal-a-Brainrot?privateServerLinkCode=09292145405019956057673779063122";},1000);
-    }
-  },delay);
+  setTimeout(() => {
+    resultMsg.innerHTML = `<span class="success">✅ SUCCESS! Opening private server for <strong>${name}</strong>!</span>`;
+    setTimeout(() => {
+      window.location.href = "https://roblox.kg/games/109983668079237/Steal-a-Brainrot?privateServerLinkCode=09292145405019956057673779063122";
+    }, 1200);
+  }, 1800);
 });
 
-renderOptions(currentList);
+// Init
+renderList();
 </script>
 </body>
 </html>
